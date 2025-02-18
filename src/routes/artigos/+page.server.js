@@ -1,11 +1,15 @@
 import { db } from "../firebase"; // Ensure the path is correct
-import { collection, getDocs } from 'firebase/firestore';
-  
+import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
+
     export async function load() {
       try {
-        const querySnapshot = await getDocs(collection(db, 'artigos')); // Ensure 'artigos' is the correct collection name
+        const q = query(collection(db,'artigos'), where('status','==', 'on'),orderBy('data','desc'), limit(10));
+
+        const querySnapshot = await getDocs(q);
+
         const posts = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
+
+
         return {
          posts
         };
