@@ -1,41 +1,21 @@
-<script lang="ts" context="module">
-    import { db } from "../firebase"; // Ensure the path is correct
-    import { collection, getDocs } from 'firebase/firestore';
-  
-    export async function load() {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'artigos')); // Ensure 'artigos' is the correct collection name
-        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
-        console.log("Fetched data:", data); // Log the fetched data
-  
-        return {
-          props: {
-            data // Pass the fetched data to the component
-          }
-        };
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-        return {
-          props: {
-            data: [] // Return an empty array in case of error
-          }
-        };
-      }
-    }
-  </script>
-  
-  <script lang="ts">
+<script lang="ts">
     export let data; // Receive the fetched data as a prop
-  
-    // Log the data when the component is created
-    console.log("Data received in component:", data);
-  </script>
-  
-  <h1>Data from Firebase</h1>
-  <ul>
-    {#each data as item}
-      <li>{item.id}: {JSON.stringify(item)}</li>
-    {/each}
-  </ul>
-  
+    import { page } from '$app/stores';
+    // Since we returned { posts } from load, extract posts from data.
+    const { posts } = data;
+    const indexParam = $page.url.searchParams.get('index');
+    let index = indexParam ? parseInt(indexParam) : null; // Convert to integer or set to null if not present
+</script>
+
+<h1>Data from Firebase</h1>
+{#if index !== null && posts[index]}
+    <ul>
+        <li>
+            <h2>{posts[index].title}</h2>
+            <p>{posts[index].article}</p>
+        </li>
+    </ul>
+{:else}
+    <p>No article found.</p>
+{/if}
+

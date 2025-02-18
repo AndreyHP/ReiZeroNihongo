@@ -1,12 +1,13 @@
 <script lang="ts">
     import Aboutme from "./aboutme.svelte";
     import Artigos from "./artigos.svelte";
+    let {posts} = $props();
 </script>
 
 <main>
     <div>
         <div id="article-div">
-        <Artigos/>
+        <Artigos {posts}/>
         </div>
     </div>
     <Aboutme/>
