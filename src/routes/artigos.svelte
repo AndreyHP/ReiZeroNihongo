@@ -2,6 +2,7 @@
     import { base } from "$app/paths";
 </script>
 
+
 <div style="text-align: center; margin-left: auto; margin-right: auto;">
     <div>
         <a data-sveltekit-preload-data="tap" href="{base}/artigos">
